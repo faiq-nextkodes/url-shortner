@@ -1,497 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener - Nature Theme</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+<!-- Floating particles -->
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Background with blurred nature image effect */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(120, 200, 80, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 200, 100, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(100, 180, 255, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, #2E8B57 0%, #228B22 30%, #32CD32 60%, #90EE90 100%);
-            filter: blur(1px);
-            z-index: -2;
-        }
-
-        /* Floating particles effect */
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .particle:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 60px; height: 60px; top: 20%; right: 20%; animation-delay: 2s; }
-        .particle:nth-child(3) { width: 40px; height: 40px; bottom: 20%; left: 30%; animation-delay: 4s; }
-        .particle:nth-child(4) { width: 100px; height: 100px; top: 60%; right: 10%; animation-delay: 1s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        .container-fluid {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Main content area */
-        .main-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 0;
-        }
-
-        /* Glass box styling */
-        .glass-container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 25px 45px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            padding: 3rem;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .glass-title {
-            color: white;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-weight: 600;
-            font-size: 2.5rem;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .glass-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, #90EE90, #32CD32);
-            border-radius: 2px;
-        }
-
-        /* Form styling */
-        .form-group {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .form-label {
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-            margin-bottom: 0.8rem;
-            display: block;
-            font-size: 1.1rem;
-        }
-
-        .form-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            color: white;
-            padding: 1rem 1.5rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-control:focus {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #90EE90;
-            box-shadow: 0 0 0 3px rgba(144, 238, 144, 0.2);
-            color: white;
-            outline: none;
-        }
-
-        .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .btn-shorten {
-            background: linear-gradient(135deg, #32CD32, #228B22);
-            border: none;
-            border-radius: 15px;
-            color: white;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            box-shadow: 0 8px 25px rgba(50, 205, 50, 0.3);
-        }
-
-        .btn-shorten:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(50, 205, 50, 0.4);
-            background: linear-gradient(135deg, #228B22, #32CD32);
-        }
-
-        .btn-shorten:active {
-            transform: translateY(0);
-        }
-
-        /* Results section */
-        .results-section {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border-radius: 25px 25px 0 0;
-            padding: 2.5rem;
-            margin-top: auto;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .results-title {
-            color: #2d5a3d;
-            font-weight: 600;
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .results-title::before {
-            content: '🌿';
-            margin-right: 0.5rem;
-        }
-
-        .url-table {
-            background: transparent;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table thead th {
-            background: linear-gradient(135deg, #32CD32, #228B22);
-            color: white;
-            border: none;
-            padding: 1.2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.9rem;
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(45, 90, 61, 0.1);
-        }
-
-        .table tbody tr:hover {
-            background: rgba(50, 205, 50, 0.05);
-            transform: translateX(5px);
-        }
-
-        .table tbody td {
-            padding: 1.2rem;
-            color: #2d5a3d;
-            font-weight: 500;
-            border: none;
-            vertical-align: middle;
-        }
-
-        .short-url-link {
-            color: #228B22;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            background: rgba(50, 205, 50, 0.1);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            display: inline-block;
-            position: relative;
-        }
-
-        .short-url-link:hover {
-            background: rgba(50, 205, 50, 0.2);
-            color: #1a5f1a;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(50, 205, 50, 0.2);
-        }
-
-        .short-url-link::after {
-            content: '🔗';
-            margin-left: 0.5rem;
-        }
-
-        .long-url {
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: #5a5a5a;
-        }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .glass-container {
-                padding: 2rem;
-                margin: 1rem;
-            }
-
-            .glass-title {
-                font-size: 2rem;
-            }
-
-            .results-section {
-                padding: 1.5rem;
-            }
-
-            .table-responsive {
-                border-radius: 10px;
-            }
-        }
-
-        /* Loading animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 0.5rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            color: #32CD32;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-    </style>
-</head>
-<body>
-    <!-- Floating particles -->
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-
-    <div class="container-fluid">
-        <!-- Main content area with glass container -->
-        <div class="main-content">
-            <div class="glass-container">
-                <h1 class="glass-title">URL Shortener</h1>
-                
-                <form id="urlForm">
-                    <div class="form-group">
-                        <label for="longURL" class="form-label">
-                            <i class="fas fa-link"></i> Enter URL
-                        </label>
-                        <input 
-                            type="url" 
-                            class="form-control" 
-                            id="longURL" 
-                            name="longURL" 
-                            placeholder="https://example.com/very/long/link"
-                            required
-                        >
-                    </div>
-                    <button type="submit" class="btn btn-shorten">
-                        <i class="fas fa-magic"></i> Shorten URL
-                    </button>
-                </form>
-            </div>
+<div class="container-fluid url-shortener-page">
+  <!-- Main content area with glass container -->
+  <div class="main-content">
+    <div class="glass-container">
+      <h1 class="glass-title">URL Shortener</h1>
+      
+      <%= form_with model: @url, local: true, html: { id: "urlForm", class: "url-form" } do |form| %>
+        <div class="form-group">
+          <%= form.label :longURL, class: "form-label" do %>
+            <i class="fas fa-link"></i> Enter URL
+          <% end %>
+          <%= form.text_field :longURL, 
+                              class: "form-control", 
+                              placeholder: "https://example.com/very/long/link",
+                              required: true %>
         </div>
-
-        <!-- Results section -->
-        <div class="results-section">
-            <h2 class="results-title">Generated URLs</h2>
-            
-            <div class="table-responsive">
-                <table class="table url-table">
-                    <thead>
-                        <tr>
-                            <th><i class="fas fa-globe"></i> Original URL</th>
-                            <th><i class="fas fa-compress-alt"></i> Shortened URL</th>
-                        </tr>
-                    </thead>
-                    <tbody id="urlTableBody">
-                        <!-- Sample data for demonstration -->
-                        <tr>
-                            <td class="long-url">https://example.com/very/long/url/with/many/parameters?param1=value1&param2=value2</td>
-                            <td>
-                                <a href="#" class="short-url-link" target="_blank" rel="noopener">
-                                    short.ly/abc123
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="long-url">https://github.com/user/repository/blob/main/very-long-filename.js</td>
-                            <td>
-                                <a href="#" class="short-url-link" target="_blank" rel="noopener">
-                                    short.ly/xyz789
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <%= form.submit "Shorten URL", class: "btn btn-shorten" do %>
+          <i class="fas fa-magic"></i> Shorten URL
+        <% end %>
+      <% end %>
     </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Form submission handler
-        document.getElementById('urlForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('.btn-shorten');
-            const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
-            submitBtn.innerHTML = '<span class="loading"></span>Shortening...';
-            submitBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                const longUrl = document.getElementById('longURL').value;
-                const shortUrl = 'short.ly/' + Math.random().toString(36).substr(2, 6);
-                
-                // Add new row to table
-                addUrlToTable(longUrl, shortUrl);
-                
-                // Reset form
-                this.reset();
-                
-                // Reset button
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                // Show success animation
-                submitBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-                setTimeout(() => {
-                    submitBtn.style.background = 'linear-gradient(135deg, #32CD32, #228B22)';
-                }, 1000);
-                
-            }, 1500);
-        });
-        
-        function addUrlToTable(longUrl, shortUrl) {
-            const tbody = document.getElementById('urlTableBody');
-            const row = document.createElement('tr');
-            row.style.opacity = '0';
-            row.style.transform = 'translateY(20px)';
-            
-            row.innerHTML = `
-                <td class="long-url">${longUrl}</td>
+  <!-- Results section -->
+  <div class="results-section">
+    <h2 class="results-title">Generated URLs</h2>
+    
+    <div class="table-responsive">
+      <table class="table url-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-globe"></i> Original URL</th>
+            <th><i class="fas fa-compress-alt"></i> Shortened URL</th>
+          </tr>
+        </thead>
+        <tbody id="urlTableBody">
+          <% if @urls.present? %>
+            <% @urls.each do |url| %>
+              <tr class="url-row">
+                <td class="long-url"><%= url.longURL %></td>
                 <td>
-                    <a href="${longUrl}" class="short-url-link" target="_blank" rel="noopener">
-                        ${shortUrl}
-                    </a>
+                  <%= link_to url_path(url.shortURL), 
+                              class: "short-url-link", 
+                              target: "_blank", 
+                              rel: "noopener" do %>
+                    <%= request.host %><%= url_path(url.shortURL) %>
+                  <% end %>
                 </td>
-            `;
-            
-            tbody.insertBefore(row, tbody.firstChild);
-            
-            // Animate in
-            setTimeout(() => {
-                row.style.transition = 'all 0.5s ease';
-                row.style.opacity = '1';
-                row.style.transform = 'translateY(0)';
-            }, 100);
-        }
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="2" class="empty-state">
+                <i class="fas fa-link"></i>
+                <p>No URLs shortened yet. Create your first short URL above!</p>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Form submission handler with loading state
+    const urlForm = document.getElementById('urlForm');
+    if (urlForm) {
+      urlForm.addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('.btn-shorten');
+        const originalText = submitBtn.innerHTML;
         
-        // Add some dynamic particles
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.width = (Math.random() * 50 + 20) + 'px';
-            particle.style.height = particle.style.width;
-            particle.style.animationDelay = Math.random() * 6 + 's';
-            
-            document.body.appendChild(particle);
-            
-            setTimeout(() => {
-                particle.remove();
-            }, 6000);
-        }
+        // Show loading state
+        submitBtn.innerHTML = '<span class="loading"></span>Shortening...';
+        submitBtn.disabled = true;
         
-        // Create particles periodically
-        setInterval(createParticle, 3000);
-    </script>
-</body>
-</html>
+        // Re-enable button after form submission (in case of validation errors)
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }, 3000);
+      });
+    }
+    
+    // Add some dynamic particles
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle dynamic-particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.width = (Math.random() * 50 + 20) + 'px';
+      particle.style.height = particle.style.width;
+      particle.style.animationDelay = Math.random() * 6 + 's';
+      
+      document.body.appendChild(particle);
+      
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.remove();
+        }
+      }, 6000);
+    }
+    
+    // Create particles periodically
+    setInterval(createParticle, 3000);
+    
+    // Animate in existing URL rows
+    const urlRows = document.querySelectorAll('.url-row');
+    urlRows.forEach((row, index) => {
+      row.style.opacity = '0';
+      row.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        row.style.transition = 'all 0.5s ease';
+        row.style.opacity = '1';
+        row.style.transform = 'translateY(0)';
+      }, index * 100);
+    });
+  });
+</script>
